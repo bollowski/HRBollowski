@@ -74,20 +74,19 @@
         __weak Recipe *weakRecipe = recipe;
         __weak HRRecipeCell *weakCell = cell;
         __weak HRMasterViewController *weakSelf = self;
-
+        
         [cell.activityIndicator startAnimating];
         [cell.activityIndicator setHidden:NO];
         
         // Add support to MIME photo/jpeg which is not standard
         [cell.imageView.imageResponseSerializer setAcceptableContentTypes:[NSSet setWithObjects:(@"photo/jpeg"), (@"image/jpeg"), nil]];
-        
+
         // Set the image
         [cell.imageView setImageWithURLRequest:weakRecipe.photoUrlRequest
                               placeholderImage:nil
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                           // Configure cell as we found image
                                            [weakSelf configureFoundImageForCell:weakCell display:YES];
-                                           [weakCell.imageView setImage:image];
+                                           weakCell.imageView.image = image;
                                            
                                            // Fade in image
                                            weakCell.imageView.alpha = 0.0;
@@ -99,7 +98,7 @@
                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                            // If download fail show info text
                                            if ([error.localizedDescription isEqualToString:@"Request failed: forbidden (403)"]) {
-                                               [self configureFoundImageForCell:weakCell display:NO];
+                                               [weakSelf configureFoundImageForCell:weakCell display:NO];
                                                [weakRecipe setPhoto:@""];
                                                [weakRecipe save];
                                            } else {

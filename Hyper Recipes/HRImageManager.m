@@ -13,7 +13,7 @@
 @implementation HRImageManager
 
 - (UIImage *)loadImageForRecipe:(Recipe *)recipe {
-    if (recipe.localphotopath) {
+    if ([recipe.localphotopath length]) {
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfFile:recipe.localphotopath]];
 
         if (img) {

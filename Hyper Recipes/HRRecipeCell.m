@@ -8,6 +8,12 @@
 
 #import "HRRecipeCell.h"
 
+@interface HRRecipeCell ()
+
+- (void) resetCell;
+
+@end
+
 @implementation HRRecipeCell
 
 - (id)initWithFrame:(CGRect)frame {
@@ -19,11 +25,22 @@
 
 - (void)prepareForReuse {
     [super prepareForReuse];
+    [self resetCell];
+}
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self resetCell];
+
+}
+
+- (void) resetCell
+{
     self.missingPhotoLabel.hidden = YES;
     self.imageView.hidden = YES;
     self.imageView.image = nil;
     self.activityIndicator.hidesWhenStopped = YES;
     self.activityIndicator.hidden = YES;
+    [self.activityIndicator stopAnimating];
 }
 @end

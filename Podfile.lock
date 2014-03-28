@@ -25,7 +25,7 @@ PODS:
     - CocoaLumberjack/Core
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.0)
+  - AFNetworking
   - CocoaLumberjack
 
 SPEC CHECKSUMS:
