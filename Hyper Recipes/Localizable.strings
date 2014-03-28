@@ -1,0 +1,19 @@
+/****************************************************************************/
+/* Localization file */
+
+
+"Tap the pen and paper icon to write a description of the recipe." = "Tap the pen and paper icon to write a description of the recipe.";
+"Tap the pen and paper icon to write instructions for the recipe." = "Tap the pen and paper icon to write instructions for the recipe.";
+"You are about to delete the recipe!" = "You are about to delete the recipe!";
+"Cancel" = "Cancel";
+"Delete" = "Delete";
+"Take Photo" = "Take Photo";
+"Choose from Library" = "Choose from Library";
+"This recipe is missing a photo. Cook and Snap!" = "This recipe is missing a photo. Cook and Snap!";
+"No instructions are given, just look at the image and guess." = "No instructions are given, just look at the image and guess.";
+"No description has been written." = "No description has been written.";
+"Warning" = "Warning";
+"You need to give the recipe a name." = "You need to give the recipe a name.";
+"Ok" = "Ok";
+"Error" = "Error";
+"This device doesn't have a camera." = "This device doesn't have a camera.";
