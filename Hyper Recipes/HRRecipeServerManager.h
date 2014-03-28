@@ -9,6 +9,7 @@
 // Manage Recipes sync with server
 
 #import <Foundation/Foundation.h>
+#import "SyncStatus.h"
 #import "Recipe+LocalAccessors.h"
 #import "Recipe+RemoteAccessors.h"
 

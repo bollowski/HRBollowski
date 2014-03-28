@@ -48,6 +48,7 @@
     recipe.photo = photoUrl;
     recipe.localphotopath = localPhotoUrl;
     recipe.changedateonserver = changedDate;
+    recipe.pushtoserver = [NSNumber numberWithBool:YES];
 
     return recipe;
 }
@@ -85,6 +86,7 @@
         recipe.difficulty = difficulty;
         recipe.objectidonserver = serverObjectId;
         recipe.changedateonserver = changedDate;
+        recipe.pushtoserver = [NSNumber numberWithBool:YES];
     }
     return recipe;
 }

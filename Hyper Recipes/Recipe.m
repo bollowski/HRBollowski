@@ -20,8 +20,5 @@
 @dynamic name;
 @dynamic objectidonserver;
 @dynamic photo;
-@dynamic removefromserver;
-@dynamic uploading;
-@dynamic shouldbeuploaded;
 
 @end

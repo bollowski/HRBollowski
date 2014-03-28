@@ -74,8 +74,8 @@
 }
 
 - (void)pushNotSyncedToServer {
-    // Should only push a recipe to server if it full fill the criteria: shouldbeuploaded == '' AND uploading == NO AND removefromserver == NO
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"shouldbeuploaded == YES AND uploading == NO AND removefromserver == NO"];
+    // Should only push a recipe to server if it full fill the criteria: pushtoserver == '' AND uploading == NO AND removefromserver == NO
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync.pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
     
     NSArray *shouldBePushed = [Recipe fetchAllUsingPredicate:predicate
                                                      Context:self.managedObjectContext];
@@ -87,7 +87,7 @@
 
 - (void)pushToServerWhenNoServerObjectId {
     // Should only push a recipe to server if it full fill the criteria: objectidonserver == '' AND uploading == NO AND removefromserver == NO
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectidonserver == '' AND uploading == NO AND removefromserver == NO"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync.pushtoserver == YES AND sync.uploading == NO AND sync.removefromserver == NO"];
     
     NSArray *shouldBePushed = [Recipe fetchAllUsingPredicate:predicate
                                                      Context:self.managedObjectContext];
@@ -99,22 +99,22 @@
 
 - (void)pushToServerWithRecipe:(Recipe *)recipe {
     if (![recipe.uploading boolValue]) {
+        __weak Recipe *weakRecipe = recipe;
+
         if ([recipe.objectidonserver intValue] != 0) {
             // We are updating an existing recipe on the server
             [recipe saveOnResult:^(NSNumber *serverObjectId) {
                 // Mark the recipe as synced
-                [recipe setShouldbeuploaded:NO];
+                [weakRecipe setPushtoserver:NO];
             }            onError:^(NSError *error) {
-                [recipe setShouldbeuploaded:[NSNumber numberWithBool:YES]];
                 DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed saveOnResult: %@", [error localizedDescription]);
             }];
         } else {
             // We are adding a recipe to the server
-            __weak Recipe *weakRecipe = recipe;
-
             [recipe createInstanceOnResult:^(NSNumber *serverObjectId) {
                 [weakRecipe setObjectidonserver:serverObjectId];
                 [weakRecipe save];
+                [weakRecipe setPushtoserver:NO];
             }                      onError:^(NSError *error) {
                 DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed createInstanceOnResult: %@", [error localizedDescription]);
             }];

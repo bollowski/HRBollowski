@@ -47,7 +47,7 @@
                     [formData appendPartWithFileData:imageData name:@"recipe[photo]" fileName:fileName mimeType:@"image/jpeg"];
                 }
             } success:^(NSURLSessionDataTask *task, id responseObject) {
-        resultBlock([NSNumber numberWithInt:[[responseObject objectForKey:@"id"] integerValue]]);
+        resultBlock([NSNumber numberWithInt:[[responseObject objectForKey:@"id"] intValue]]);
 
         // The app is not in progress of uploading the recipe
         [self recipeIsNotUploadingToServer];
