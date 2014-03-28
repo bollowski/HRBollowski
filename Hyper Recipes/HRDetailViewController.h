@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import "HRRecipeServerManager.h"
+#import "HRRecipeSyncManager.h"
 #import "HRImageManager.h"
 #import "Recipe.h"
 #import "HRAddAndEditRecipeViewController.h"

@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.imageManager = [[HRImageManager alloc] init];
-    self.recipeServerManager = [[HRRecipeServerManager alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.recipeServerManager = [[HRRecipeSyncManager alloc] initWithManagedObjectContext:self.managedObjectContext];
 
     [self setupFetchedResultsController];
 }

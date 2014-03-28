@@ -1,5 +1,5 @@
 //
-//  HRRecipeManager.h
+//  HRRecipeSyncManager.h
 //  Hyper Recipes
 //
 //  Created by Mikael Bolle on 23/03/14.
@@ -13,7 +13,7 @@
 #import "Recipe+LocalAccessors.h"
 #import "Recipe+RemoteAccessors.h"
 
-@interface HRRecipeServerManager : NSObject
+@interface HRRecipeSyncManager : NSObject
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 
 - (void)syncData;

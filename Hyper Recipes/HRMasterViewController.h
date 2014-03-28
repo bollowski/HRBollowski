@@ -15,7 +15,7 @@
 #import "Recipe+RemoteAccessors.h"
 #import "FetchedResultsControllerDataSource.h"
 #import "HRRecipeCell.h"
-#import "HRRecipeServerManager.h"
+#import "HRRecipeSyncManager.h"
 #import "HRImageManager.h"
 
 @class HRDetailViewController;
@@ -24,7 +24,7 @@
 
 @property(nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property(nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property(nonatomic, strong) HRRecipeServerManager *recipeServerManager;
+@property(nonatomic, strong) HRRecipeSyncManager *recipeServerManager;
 
 - (IBAction)refresh:(id)sender;
 

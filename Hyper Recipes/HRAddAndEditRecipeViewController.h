@@ -12,7 +12,7 @@
 #import "Recipe+Utilities.h"
 #import "HRComposeViewController.h"
 #import "Recipe+RemoteAccessors.h"
-#import "HRRecipeServerManager.h"
+#import "HRRecipeSyncManager.h"
 #import "HRImageManager.h"
 
 @interface HRAddAndEditRecipeViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Mikael Bolle. All rights reserved.
 //
 
-#import "HRRecipeServerManager.h"
+#import "HRRecipeSyncManager.h"
 
-@interface HRRecipeServerManager ()
+@interface HRRecipeSyncManager ()
 
 - (void)removeLocalRecipeIfNotInArray:(NSArray *)result;
 
@@ -16,11 +16,13 @@
 
 - (void)pushNotSyncedToServer;
 
+- (void)updateWithResult:(NSArray *) result;
+
 @property(nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
 
-@implementation HRRecipeServerManager
+@implementation HRRecipeSyncManager
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
     self = [super init];
@@ -33,20 +35,9 @@
 // This method ensure that the data is in complete sync
 - (void)syncData {
     [Recipe loadAllOnResult:^(NSArray *result) {
-        for (NSDictionary *dic in result) {
-            // Try to update/add Recipe if needed
-            [Recipe insertOrUpdateRecipeWithServerObjectId:[dic objectForKey:@"id"]
-                                                      name:[dic objectForKey:@"name"]
-                                               description:[dic objectForKey:@"description"]
-                                              instructions:[dic objectForKey:@"instructions"]
-                                                  favorite:[dic objectForKey:@"favorite"]
-                                                difficulty:@([[dic objectForKey:@"difficulty"] intValue])
-                                                  photoUrl:[[dic objectForKey:@"photo"] objectForKey:@"url"]
-                                               changedDate:[dic objectForKey:@"updated_at"]
-                                    inManagedObjectContext:self.managedObjectContext];
-        }
         
-        [Recipe saveInManagedObjectContext:self.managedObjectContext];
+        [self updateWithResult:result]; // Update local recipes if needed
+        [Recipe saveInManagedObjectContext:self.managedObjectContext]; // Save context so the collection view is updated and the user see the changes
         
         [self pushNotSyncedToServer]; // Upload edited recipes that have not been synced
         [self pushToServerWhenNoServerObjectId]; // Upload recipes that have not been uploaded
@@ -60,6 +51,22 @@
     }];
 }
 
+- (void)updateWithResult: (NSArray *) result
+{
+    for (NSDictionary *dic in result) {
+        // Try to update/add Recipe if needed
+        [Recipe insertOrUpdateRecipeWithServerObjectId:[dic objectForKey:@"id"]
+                                                  name:[dic objectForKey:@"name"]
+                                           description:[dic objectForKey:@"description"]
+                                          instructions:[dic objectForKey:@"instructions"]
+                                              favorite:[dic objectForKey:@"favorite"]
+                                            difficulty:@([[dic objectForKey:@"difficulty"] intValue])
+                                              photoUrl:[[dic objectForKey:@"photo"] objectForKey:@"url"]
+                                           changedDate:[dic objectForKey:@"updated_at"]
+                                inManagedObjectContext:self.managedObjectContext];
+    }
+}
+
 - (void)removeLocalRecipeIfNotInArray:(NSArray *)result {
     NSMutableDictionary *allServerObjectID = [[NSMutableDictionary alloc] init];
 
@@ -68,14 +75,15 @@
     }
 
     for (Recipe *recipe in [Recipe fetchAllInManagedObjectContext:self.managedObjectContext]) {
-        if (recipe.objectidonserver != [NSNumber numberWithInt:0] && ![allServerObjectID objectForKey:recipe.objectidonserver])
+        if (recipe.objectidonserver != [NSNumber numberWithInt:0] && ![allServerObjectID objectForKey:recipe.objectidonserver]){
             [recipe delete];
+        }
     }
 }
 
 - (void)pushNotSyncedToServer {
     // Should only push a recipe to server if it full fill the criteria: pushtoserver == '' AND uploading == NO AND removefromserver == NO
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync.pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
     
     NSArray *shouldBePushed = [Recipe fetchAllUsingPredicate:predicate
                                                      Context:self.managedObjectContext];
@@ -87,7 +95,7 @@
 
 - (void)pushToServerWhenNoServerObjectId {
     // Should only push a recipe to server if it full fill the criteria: objectidonserver == '' AND uploading == NO AND removefromserver == NO
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync.pushtoserver == YES AND sync.uploading == NO AND sync.removefromserver == NO"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
     
     NSArray *shouldBePushed = [Recipe fetchAllUsingPredicate:predicate
                                                      Context:self.managedObjectContext];

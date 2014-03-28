@@ -161,7 +161,7 @@
                                      inManagedObjectContext:self.managedObjectContext];
     [recp save];
 
-    HRRecipeServerManager *recipeServerManager = [[HRRecipeServerManager alloc] initWithManagedObjectContext:self.managedObjectContext];
+    HRRecipeSyncManager *recipeServerManager = [[HRRecipeSyncManager alloc] initWithManagedObjectContext:self.managedObjectContext];
     [recipeServerManager pushToServerWithRecipe:recp];
 }
 

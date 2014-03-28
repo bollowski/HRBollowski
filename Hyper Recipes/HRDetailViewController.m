@@ -96,7 +96,7 @@
     [self.recipe markAsFavorite];
     [self.recipe save];
 
-    HRRecipeServerManager *recipeServerManager = [[HRRecipeServerManager alloc] initWithManagedObjectContext:self.recipe.managedObjectContext];
+    HRRecipeSyncManager *recipeServerManager = [[HRRecipeSyncManager alloc] initWithManagedObjectContext:self.recipe.managedObjectContext];
     [recipeServerManager pushUpdateFavoriteToServerWithRecipe:self.recipe];
 
     [self updateFavoriteButton];
