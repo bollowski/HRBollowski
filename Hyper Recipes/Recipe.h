@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Mikael Bolle. All rights reserved.
 //
 
+// TODO: Add separete entity that manage the state of a recipe (shouldbeuploaded, uploading, removefromserver), not prioritized.
+
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 

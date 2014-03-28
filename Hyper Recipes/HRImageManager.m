@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Mikael Bolle. All rights reserved.
 //
 
+// TODO: Should manage to resize images (not prioritized)
+
 #import "HRImageManager.h"
 
 @implementation HRImageManager
