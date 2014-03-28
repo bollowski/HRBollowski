@@ -36,9 +36,10 @@
         recipe = (id) [managedObjectContext objectWithID:objectId];
     }
 
-    if (recipe == nil)
+    if (recipe == nil){
         recipe = [NSEntityDescription insertNewObjectForEntityForName:self.entityName
                                                inManagedObjectContext:managedObjectContext];
+    }
     
     recipe.name = name;
     recipe.desc = description;
@@ -68,14 +69,16 @@
     NSArray *result = [Recipe fetchAllUsingPredicate:predicate Context:managedObjectContext];
     Recipe *recipe;
 
-    if ([result count] > 1)
+    if ([result count] > 1){
         DDLogWarn(@"Recipe+LocalAccessors - insertOrUpdateRecipeWithServerObjectId - result should only return 1 object. [result count] : %tu", [result count]);
-
+    }
+    
     recipe = [result lastObject];
 
-    if (recipe == nil)
+    if (recipe == nil) {
         recipe = [NSEntityDescription insertNewObjectForEntityForName:self.entityName
                                                inManagedObjectContext:managedObjectContext];
+    }
 
     if (![recipe.changedateonserver isEqualToString:changedDate]) {
         recipe.name = name;
@@ -105,8 +108,9 @@
     NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest
                                                           error:&error];
 
-    if (error)
+    if (error){
         DDLogWarn(@"Recipe+LocalAccessors - fetchAllInManagedObjectContext - failed  to find recipe upron to update:: %@", [error localizedDescription]);
+    }
 
     return result;
 }
@@ -124,8 +128,9 @@
     NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest
                                                           error:&error];
 
-    if (error)
+    if (error){
         DDLogWarn(@"Recipe+LocalAccessors - fetchAllUsingPredicate - failed to find recipe: %@", [error localizedDescription]);
+    }
 
     return result;
 }
@@ -156,8 +161,9 @@
 + (void)saveInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
     NSError *error;
 
-    if (![managedObjectContext save:&error])
+    if (![managedObjectContext save:&error]) {
         DDLogWarn(@"Recipe+LocalAccessors - saveInManagedObjectContext - failed to update/save recipe: %@:", [error localizedDescription]);
+    }
 }
 
 // Mark/Unmark a recipe as a favorite
@@ -168,8 +174,9 @@
 - (void)save {
     NSError *error;
 
-    if (![self.managedObjectContext save:&error])
+    if (![self.managedObjectContext save:&error]) {
         DDLogWarn(@"Recipe+LocalAccessors - save - failed to update/save recipe: %@:", [error localizedDescription]);
+    }
 }
 
 - (void)delete {

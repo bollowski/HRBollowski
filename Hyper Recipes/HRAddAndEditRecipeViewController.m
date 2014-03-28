@@ -86,15 +86,17 @@
 }
 
 - (void)fillOutTextViewForDescriptionAndInstructions {
-    if ([self.recipe.desc length])
+    if ([self.recipe.desc length]){
         self.recipeDescription.text = self.recipe.desc;
-    else
+    }else{
         self.recipeDescription.text = NSLocalizedString(@"Tap the pen and paper icon to write a description of the recipe.", nil);
-
-    if ([self.recipe.instructions length])
+    }
+    
+    if ([self.recipe.instructions length]){
         self.recipeInstruction.text = self.recipe.instructions;
-    else
+    }else{
         self.recipeInstruction.text = NSLocalizedString(@"Tap the pen and paper icon to write instructions for the recipe.", nil);
+    }
 }
 
 - (NSNumber *)difficultyFromSelectedSegmentIndex {
@@ -135,19 +137,22 @@
     NSString *descriptionToSave;
     NSString *instructionsToSave;
 
-    if ([self.recipeDescription.text isEqualToString:NSLocalizedString(@"Tap the pen and paper icon to write a description of the recipe.", nil)])
+    if ([self.recipeDescription.text isEqualToString:NSLocalizedString(@"Tap the pen and paper icon to write a description of the recipe.", nil)]){
         descriptionToSave = @"";
-    else
+    }else{
         descriptionToSave = self.recipeDescription.text;
-
-    if ([self.recipeInstruction.text isEqualToString:NSLocalizedString(@"Tap the pen and paper icon to write instructions for the recipe.", nil)])
+    }
+    
+    if ([self.recipeInstruction.text isEqualToString:NSLocalizedString(@"Tap the pen and paper icon to write instructions for the recipe.", nil)]){
         instructionsToSave = @"";
-    else
+    }else{
         instructionsToSave = self.recipeInstruction.text;
-
+    }
+    
     // Local image has been change so we should remove the ref to the remote one
-    if([self.localPhotoUrl length])
+    if([self.localPhotoUrl length]){
         self.photoUrl = @"";
+    }
     
     Recipe *recp = [Recipe insertOrUpdateRecipeWithObjectId:self.objectId
                                                        name:self.recipeName.text
@@ -167,8 +172,9 @@
 
 - (void)deleteRecipe {
     //  Delete stored image on phone
-    if ([self.recipe.localphotopath length])
+    if ([self.recipe.localphotopath length]){
         [self.imageManager deleteImageWithPath:self.recipe.localphotopath];
+    }
     
     if ([self.recipe.objectidonserver intValue] != 0) {
         // Inform that on next sync this recipe should be deleted

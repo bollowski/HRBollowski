@@ -53,4 +53,5 @@
     return [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelURL];
 }
 
+
 @end

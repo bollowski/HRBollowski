@@ -51,8 +51,9 @@
     BOOL fileExists = [fileManager fileExistsAtPath:path];
 
     if (fileExists) {
-        if (![fileManager removeItemAtPath:path error:&error])
+        if (![fileManager removeItemAtPath:path error:&error]) {
             DDLogError(@"HRImageManager - deleteImageWithPath - Failed to delete image: %@", [error localizedDescription]);
+        }
     }
 }
 

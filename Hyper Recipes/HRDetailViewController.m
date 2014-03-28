@@ -48,15 +48,17 @@
 
     [self.difficulty setSelectedSegmentIndex:self.recipe.difficultyAsSegmentIndex];
 
-    if ([self.recipe.desc length])
+    if ([self.recipe.desc length]) {
         self.description.text = self.recipe.desc;
-    else
+    } else {
         self.description.text = NSLocalizedString(@"No description has been written.", nil);
-
-    if ([self.recipe.instructions length])
+    }
+    
+    if ([self.recipe.instructions length]){
         self.instructions.text = self.recipe.instructions;
-    else
+    } else {
         self.instructions.text = NSLocalizedString(@"No instructions are given, just look at the image and guess.", nil);
+    }
 }
 
 - (void)imageForRecipe; {
@@ -84,8 +86,9 @@
     self.recipe = (id) [self.recipe.managedObjectContext objectWithID:self.recipe.objectID];
 
     // Only update view if recipe exist, this block null ref when deleting recipes
-    if (self.recipe)
+    if (self.recipe) {
         [self configureView];
+    }
 }
 
 - (void)updateFavoriteButton {

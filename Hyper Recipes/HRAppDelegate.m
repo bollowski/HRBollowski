@@ -70,11 +70,11 @@
                                                               appropriateForURL:nil
                                                                          create:YES
                                                                           error:NULL];
-    return [documentsDirectory URLByAppendingPathComponent:@"db.sqlite"];
+    return [documentsDirectory URLByAppendingPathComponent:@"HyperRecipe.sqlite"];
 }
 
 - (NSURL *)modelURL {
-    return [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
+    return [[NSBundle mainBundle] URLForResource:@"HyperRecipe" withExtension:@"momd"];
 }
 
 @end

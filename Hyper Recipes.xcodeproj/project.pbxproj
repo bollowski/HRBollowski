@@ -32,7 +32,7 @@
 		0C9354FE18E5ED2A00A3D295 /* Recipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9354FD18E5ED2A00A3D295 /* Recipe.m */; };
 		0C93550118E5ED2B00A3D295 /* SyncStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C93550018E5ED2B00A3D295 /* SyncStatus.m */; };
 		0CB9D1AD18CF66DB00623113 /* CDStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9D1AC18CF66DB00623113 /* CDStack.m */; };
-		0CB9D1B018CF695600623113 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9D1AE18CF695600623113 /* Model.xcdatamodeld */; };
+		0CB9D1B018CF695600623113 /* HyperRecipel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9D1AE18CF695600623113 /* HyperRecipel.xcdatamodeld */; };
 		0CB9D1B618CF9B8C00623113 /* Recipe+RemoteAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9D1B518CF9B8C00623113 /* Recipe+RemoteAccessors.m */; };
 		0CB9D1B918CF9BA500623113 /* Recipe+LocalAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9D1B818CF9BA500623113 /* Recipe+LocalAccessors.m */; };
 		0CBF4D3318D0759E00364C09 /* HRAddAndEditRecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF4D3218D0759E00364C09 /* HRAddAndEditRecipeViewController.m */; };
@@ -92,7 +92,7 @@
 		0C93550018E5ED2B00A3D295 /* SyncStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncStatus.m; sourceTree = "<group>"; };
 		0CB9D1AB18CF66DB00623113 /* CDStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDStack.h; sourceTree = "<group>"; };
 		0CB9D1AC18CF66DB00623113 /* CDStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDStack.m; sourceTree = "<group>"; };
-		0CB9D1AF18CF695600623113 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		0CB9D1AF18CF695600623113 /* HyperRecipel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HyperRecipel.xcdatamodel; sourceTree = "<group>"; };
 		0CB9D1B418CF9B8C00623113 /* Recipe+RemoteAccessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Recipe+RemoteAccessors.h"; sourceTree = "<group>"; };
 		0CB9D1B518CF9B8C00623113 /* Recipe+RemoteAccessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Recipe+RemoteAccessors.m"; sourceTree = "<group>"; };
 		0CB9D1B718CF9BA500623113 /* Recipe+LocalAccessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Recipe+LocalAccessors.h"; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 				0C0D736F18D454C100EC5C35 /* Controllers */,
 				0C779B5B18DF0F4E00E7D5CC /* Classes */,
 				0C779B5A18DF0F3400E7D5CC /* Views */,
-				0CB9D1AE18CF695600623113 /* Model.xcdatamodeld */,
+				0CB9D1AE18CF695600623113 /* HyperRecipel.xcdatamodeld */,
 				0C8DC08D18C8E3880068DC51 /* Main.storyboard */,
 				0C8DC09918C8E3880068DC51 /* Images.xcassets */,
 				0C8DC08218C8E3880068DC51 /* Supporting Files */,
@@ -415,7 +415,7 @@
 				0C0D737E18DB866200EC5C35 /* HRRecipeCell.m in Sources */,
 				0C9354FE18E5ED2A00A3D295 /* Recipe.m in Sources */,
 				0C8DC09818C8E3880068DC51 /* HRDetailViewController.m in Sources */,
-				0CB9D1B018CF695600623113 /* Model.xcdatamodeld in Sources */,
+				0CB9D1B018CF695600623113 /* HyperRecipel.xcdatamodeld in Sources */,
 				0C779B6718E2143600E7D5CC /* HRImageManager.m in Sources */,
 				0C779B5918DDFB1000E7D5CC /* HRComposeViewController.m in Sources */,
 			);
@@ -640,13 +640,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		0CB9D1AE18CF695600623113 /* Model.xcdatamodeld */ = {
+		0CB9D1AE18CF695600623113 /* HyperRecipel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				0CB9D1AF18CF695600623113 /* Model.xcdatamodel */,
+				0CB9D1AF18CF695600623113 /* HyperRecipel.xcdatamodel */,
 			);
-			currentVersion = 0CB9D1AF18CF695600623113 /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
+			currentVersion = 0CB9D1AF18CF695600623113 /* HyperRecipel.xcdatamodel */;
+			path = HyperRecipel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
