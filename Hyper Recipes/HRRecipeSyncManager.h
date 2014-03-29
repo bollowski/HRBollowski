@@ -16,14 +16,19 @@
 @interface HRRecipeSyncManager : NSObject
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 
+// Allow complete sync between remote and local data
 - (void)syncData;
 
+// Push a new recipe to server
 - (void)pushToServerWhenNoServerObjectId;
 
+// Update a recipe on server
 - (void)pushToServerWithRecipe:(Recipe *)recipe;
 
+// Remove recipe from server
 - (void)pushRemoveFromServerWithRecipe:(Recipe *)recipe;
 
+// Mark/Unmark recipe as favorite
 - (void)pushUpdateFavoriteToServerWithRecipe:(Recipe *)recipe;
 
 @end

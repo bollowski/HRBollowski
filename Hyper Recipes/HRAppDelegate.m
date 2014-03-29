@@ -29,12 +29,12 @@
     self.stack = [[CDStack alloc] initWithStoreURL:self.storeURL modelURL:self.modelURL];
 
     // Set up cache
-    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:15 * 1024 * 1024 diskCapacity:60 * 1024 * 1024 diskPath:nil];
+    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:20 * 1024 * 1024 diskCapacity:80 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:URLCache];
 
     // Show indicator on network activity
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    
+
     // Override point for customization after application launch.
     UINavigationController *navigationController = (UINavigationController *) self.window.rootViewController;
     HRMasterViewController *recipeListViewController = (HRMasterViewController *) navigationController.topViewController;

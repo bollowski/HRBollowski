@@ -150,10 +150,10 @@
                                 [self.collectionView deleteItemsAtIndexPaths:@[obj]];
                                 break;
                             case NSFetchedResultsChangeUpdate:
-                                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                               // Do nothing
                                 break;
                             case NSFetchedResultsChangeMove:
-                                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                              // Do nothing
                                 break;
                         }
                     }];
@@ -207,11 +207,6 @@
             [self.collectionView reloadData];
         }
     }
-}
-
-- (id)selectedItem {
-    NSIndexPath *path = [self.collectionView.indexPathsForSelectedItems objectAtIndex:0];
-    return path ? [self.fetchedResultsController objectAtIndexPath:path] : nil;
 }
 
 - (void)performFetch {

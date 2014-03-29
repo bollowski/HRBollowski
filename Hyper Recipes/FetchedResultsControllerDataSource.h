@@ -25,8 +25,6 @@
 
 - (id)initWithCollectionView:(UICollectionView *)collectionView;
 
-- (id)selectedItem;
-
 - (void)performFetch;
 
 @end

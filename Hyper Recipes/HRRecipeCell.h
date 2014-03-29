@@ -16,4 +16,5 @@
 @property(weak, nonatomic) IBOutlet UIImageView *favoritePin;
 @property(weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+- (void)configureCellWithFoundImage:(BOOL)display;
 @end
