@@ -10,9 +10,6 @@
 
 @interface HRMasterViewController () <FetchedResultsControllerDataSourceDelegate, UITextFieldDelegate>
 
-- (void)configureFoundImageForCell:(id)aCell
-                           display:(BOOL)display;
-
 @property(nonatomic, strong) FetchedResultsControllerDataSource *fetchedResultsControllerDataSource;
 @property(nonatomic, strong) HRImageManager *imageManager;
 
