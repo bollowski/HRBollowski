@@ -12,8 +12,8 @@
 
 @interface SyncStatus : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * uploading;
-@property (nonatomic, retain) NSNumber * pushtoserver;
-@property (nonatomic, retain) NSNumber * removefromserver;
+@property(nonatomic, retain) NSNumber *uploading;
+@property(nonatomic, retain) NSNumber *pushtoserver;
+@property(nonatomic, retain) NSNumber *removefromserver;
 
 @end

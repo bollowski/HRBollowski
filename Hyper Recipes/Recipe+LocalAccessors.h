@@ -19,6 +19,7 @@
 + (NSFetchedResultsController *)fetchedResultsControllerWitSort:(NSSortDescriptor *)sort
                                                         Context:(NSManagedObjectContext *)managedObjectContext;
 
+// Update or insert an object that has been created local
 + (Recipe *)insertOrUpdateRecipeWithObjectId:(NSManagedObjectID *)objectId
                                         name:(NSString *)name
                                  description:(NSString *)description
@@ -30,7 +31,7 @@
                                  changedDate:(NSString *)changedDate
                       inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-
+// Update or insert an object that has been created remote
 + (Recipe *)insertOrUpdateRecipeWithServerObjectId:(NSNumber *)serverObjectId
                                               name:(NSString *)name
                                        description:(NSString *)description
@@ -43,6 +44,7 @@
 
 + (void)saveInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
+// Flush the cache of NSFetchedResultsController
 + (void)deleteCache;
 
 - (void)markAsFavorite;

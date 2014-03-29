@@ -103,13 +103,14 @@
                                 </view>
                                 <color key="backgroundColor" red="0.99163552990000003" green="0.99163552990000003" blue="0.99163552990000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="Ixo-by-fH8" firstAttribute="top" secondItem="cRX-9M-UQJ" secondAttribute="bottom" constant="36" id="049-XN-sRT"/>
                                     <constraint firstAttribute="bottom" secondItem="hFt-X1-YLi" secondAttribute="bottom" constant="30" id="8yA-8V-l0B"/>
                                     <constraint firstItem="Ixo-by-fH8" firstAttribute="leading" secondItem="9ms-Yz-Fo5" secondAttribute="leading" constant="10" id="CEl-Dk-lQ1"/>
                                     <constraint firstItem="hFt-X1-YLi" firstAttribute="top" secondItem="9ms-Yz-Fo5" secondAttribute="top" constant="9" id="Dmv-bo-r4U"/>
+                                    <constraint firstAttribute="centerX" secondItem="cRX-9M-UQJ" secondAttribute="centerX" id="KLo-kL-cI5"/>
                                     <constraint firstItem="hFt-X1-YLi" firstAttribute="leading" secondItem="9ms-Yz-Fo5" secondAttribute="leading" constant="10" id="Tj0-KX-Lve"/>
                                     <constraint firstAttribute="trailing" secondItem="hFt-X1-YLi" secondAttribute="trailing" constant="10" id="ZEB-7O-WDz"/>
-                                    <constraint firstItem="hFt-X1-YLi" firstAttribute="centerX" secondItem="cRX-9M-UQJ" secondAttribute="centerX" id="ipj-ou-8le"/>
-                                    <constraint firstItem="hFt-X1-YLi" firstAttribute="centerY" secondItem="cRX-9M-UQJ" secondAttribute="centerY" constant="2.5" id="mb7-HI-07p"/>
+                                    <constraint firstItem="cRX-9M-UQJ" firstAttribute="top" secondItem="9ms-Yz-Fo5" secondAttribute="top" constant="40" id="cbi-fQ-Tt6"/>
                                     <constraint firstItem="Ixo-by-fH8" firstAttribute="top" secondItem="hFt-X1-YLi" secondAttribute="bottom" id="v7L-Mi-8Fg"/>
                                 </constraints>
                                 <connections>
@@ -721,7 +722,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UXB-mt-qHI"/>
+        <segue reference="H1i-ph-887"/>
         <segue reference="YIh-Tc-EK1"/>
     </inferredMetricsTieBreakers>
 </document>

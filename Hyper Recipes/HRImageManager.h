@@ -14,10 +14,13 @@
 
 @interface HRImageManager : NSObject
 
+// Load local image 
 - (UIImage *)loadImageForRecipe:(Recipe *)recipe;
 
+// Store image locally
 - (NSString *)storeImage:(UIImage *)image;
 
+// Delete local image
 - (void)deleteImageWithPath:(NSString *)path;
 
 @end

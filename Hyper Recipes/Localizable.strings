@@ -17,3 +17,4 @@
 "Ok" = "Ok";
 "Error" = "Error";
 "This device doesn't have a camera." = "This device doesn't have a camera.";
+"This device doesn't have a photo library." = "This device doesn't have a photo library.";

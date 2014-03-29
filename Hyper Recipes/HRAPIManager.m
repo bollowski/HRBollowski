@@ -22,6 +22,16 @@ static NSString *const APIBaseURLString = @"http://hyper-recipes.herokuapp.com";
     return _sharedClient;
 }
 
+- (instancetype)initWithBaseURL:(NSURL *)url
+{
+    self = [super initWithBaseURL:url];
+    
+    if (self) {
+    }
+    
+    return self;
+}
+
 - (NSString *)baseURLAsString {
     return APIBaseURLString;
 }

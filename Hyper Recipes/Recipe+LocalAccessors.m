@@ -36,11 +36,11 @@
         recipe = (id) [managedObjectContext objectWithID:objectId];
     }
 
-    if (recipe == nil){
+    if (recipe == nil) {
         recipe = [NSEntityDescription insertNewObjectForEntityForName:self.entityName
                                                inManagedObjectContext:managedObjectContext];
     }
-    
+
     recipe.name = name;
     recipe.desc = description;
     recipe.instructions = instructions;
@@ -69,10 +69,10 @@
     NSArray *result = [Recipe fetchAllUsingPredicate:predicate Context:managedObjectContext];
     Recipe *recipe;
 
-    if ([result count] > 1){
+    if ([result count] > 1) {
         DDLogWarn(@"Recipe+LocalAccessors - insertOrUpdateRecipeWithServerObjectId - result should only return 1 object. [result count] : %tu", [result count]);
     }
-    
+
     recipe = [result lastObject];
 
     if (recipe == nil) {
@@ -108,7 +108,7 @@
     NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest
                                                           error:&error];
 
-    if (error){
+    if (error) {
         DDLogWarn(@"Recipe+LocalAccessors - fetchAllInManagedObjectContext - failed  to find recipe upron to update:: %@", [error localizedDescription]);
     }
 
@@ -128,7 +128,7 @@
     NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest
                                                           error:&error];
 
-    if (error){
+    if (error) {
         DDLogWarn(@"Recipe+LocalAccessors - fetchAllUsingPredicate - failed to find recipe: %@", [error localizedDescription]);
     }
 
@@ -145,7 +145,7 @@
     [fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-    [fetchRequest setFetchBatchSize:20];
+    [fetchRequest setFetchBatchSize:10];
 
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:managedObjectContext

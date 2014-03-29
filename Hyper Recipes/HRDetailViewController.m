@@ -53,8 +53,8 @@
     } else {
         self.description.text = NSLocalizedString(@"No description has been written.", nil);
     }
-    
-    if ([self.recipe.instructions length]){
+
+    if ([self.recipe.instructions length]) {
         self.instructions.text = self.recipe.instructions;
     } else {
         self.instructions.text = NSLocalizedString(@"No instructions are given, just look at the image and guess.", nil);

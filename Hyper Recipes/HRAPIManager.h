@@ -12,7 +12,7 @@
 @interface HRAPIManager : AFHTTPSessionManager
 
 + (instancetype)sharedClient;
-
+- (instancetype)initWithBaseURL:(NSURL *)url;
 - (NSString *)baseURLAsString;
 
 @end

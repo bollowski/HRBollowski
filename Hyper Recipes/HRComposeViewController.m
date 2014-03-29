@@ -60,7 +60,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"unwindToAddAndEditRecipeVC"]) {
         HRAddAndEditRecipeViewController *addRecipeViewController = segue.destinationViewController;
-        if ([self.composeType isEqualToString:@"instructions"]){
+        if ([self.composeType isEqualToString:@"instructions"]) {
             addRecipeViewController.recipeInstruction.text = self.textView.text;
         } else {
             addRecipeViewController.recipeDescription.text = self.textView.text;
@@ -73,10 +73,10 @@
     CGRect rectForMarker = [self.textView caretRectForPosition:self.textView.selectedTextRange.end];
 
     //If there is no change do nothing
-    if (CGRectEqualToRect(rectForMarker, self.oldRectForMarker)){
+    if (CGRectEqualToRect(rectForMarker, self.oldRectForMarker)) {
         return;
     }
-    
+
     self.oldRectForMarker = rectForMarker;
 
     CGRect visibleViewRect = self.textView.bounds;

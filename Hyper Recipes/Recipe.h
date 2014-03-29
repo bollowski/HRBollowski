@@ -13,14 +13,14 @@
 
 @interface Recipe : SyncStatus
 
-@property (nonatomic, retain) NSString * changedateonserver;
-@property (nonatomic, retain) NSString * desc;
-@property (nonatomic, retain) NSNumber * difficulty;
-@property (nonatomic, retain) NSNumber * favorite;
-@property (nonatomic, retain) NSString * instructions;
-@property (nonatomic, retain) NSString * localphotopath;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * objectidonserver;
-@property (nonatomic, retain) NSString * photo;
+@property(nonatomic, retain) NSString *changedateonserver;
+@property(nonatomic, retain) NSString *desc;
+@property(nonatomic, retain) NSNumber *difficulty;
+@property(nonatomic, retain) NSNumber *favorite;
+@property(nonatomic, retain) NSString *instructions;
+@property(nonatomic, retain) NSString *localphotopath;
+@property(nonatomic, retain) NSString *name;
+@property(nonatomic, retain) NSNumber *objectidonserver;
+@property(nonatomic, retain) NSString *photo;
 
 @end

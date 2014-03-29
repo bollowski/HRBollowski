@@ -10,12 +10,16 @@
 
 @interface Recipe (Utilities)
 
+// Convert the difficulty so it can be used as a segment index
 - (int)difficultyAsSegmentIndex;
 
+// Return the url to the image as a NSURLRequest
 - (NSURLRequest *)photoUrlRequest;
 
+// Convert bool value to string for favorite
 - (NSString *)favoriteAsString;
 
+// Adjust the photo name so it follow server standards
 - (NSString *)photoNameForServer;
 
 @end

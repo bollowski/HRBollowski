@@ -16,7 +16,7 @@
 }
 
 - (NSString *)favoriteAsString {
-    if ([self.favorite boolValue]){
+    if ([self.favorite boolValue]) {
         return @"true";
     } else {
         return @"false";
