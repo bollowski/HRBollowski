@@ -65,9 +65,7 @@
     if (img) {
         [cell configureCellWithFoundImage:YES];
         [cell.imageView setImage:img];
-    } else if (![recipe.photo length]) {
-        [cell configureCellWithFoundImage:NO];
-    } else {
+    } else if([recipe.photo length]) {
         [cell.activityIndicator startAnimating];
         [cell.activityIndicator setHidden:NO];
 
@@ -100,6 +98,8 @@
                                                DDLogVerbose(@"HRMasterViewController - configureCell - Failed to download image with errro: %@ \n Got response: %@", [error localizedDescription], response);
                                            }
                                        }];
+    }else  {
+        [cell configureCellWithFoundImage:NO];
     }
 }
 

@@ -30,7 +30,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self resetCell];
 }
 
 - (void)resetCell {
