@@ -10,11 +10,13 @@
 
 @implementation Recipe (LocalAccessors)
 
-+ (NSString *)entityName {
++ (NSString *)entityName
+{
     return @"Recipe";
 }
 
-+ (NSString *)cacheName {
++ (NSString *)cacheName
+{
     return @"RecipeCache";
 }
 
@@ -28,7 +30,8 @@
                                     photoUrl:(NSString *)photoUrl
                                localPhotoUrl:(NSString *)localPhotoUrl
                                  changedDate:(NSString *)changedDate
-                      inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+                      inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
     Recipe *recipe;
 
     if (objectId) {
@@ -36,7 +39,7 @@
         recipe = (id) [managedObjectContext objectWithID:objectId];
     }
 
-    if (recipe == nil) {
+    if (!recipe) {
         recipe = [NSEntityDescription insertNewObjectForEntityForName:self.entityName
                                                inManagedObjectContext:managedObjectContext];
     }
@@ -49,7 +52,7 @@
     recipe.photo = photoUrl;
     recipe.localphotopath = localPhotoUrl;
     recipe.changedateonserver = changedDate;
-    recipe.pushtoserver = [NSNumber numberWithBool:YES];
+    recipe.pushtoserver = @YES;
 
     return recipe;
 }
@@ -63,7 +66,8 @@
                                         difficulty:(NSNumber *)difficulty
                                           photoUrl:(NSString *)photoUrl
                                        changedDate:(NSString *)changedDate
-                            inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+                            inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
     // Find object that should be updated
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectidonserver == %@", serverObjectId];
     NSArray *result = [Recipe fetchAllUsingPredicate:predicate Context:managedObjectContext];
@@ -75,7 +79,7 @@
 
     recipe = [result lastObject];
 
-    if (recipe == nil) {
+    if (!recipe) {
         recipe = [NSEntityDescription insertNewObjectForEntityForName:self.entityName
                                                inManagedObjectContext:managedObjectContext];
     }
@@ -84,19 +88,20 @@
         recipe.name = name;
         recipe.desc = description           != (NSString *) [NSNull null] ? description : @"";
         recipe.instructions = instructions  != (NSString *) [NSNull null] ? instructions : @"";
-        recipe.favorite = favorite          != (NSNumber *) [NSNull null] ? favorite : [NSNumber numberWithBool:NO];
+        recipe.favorite = favorite          != (NSNumber *) [NSNull null] ? favorite : @NO;
         recipe.photo = photoUrl             != (NSString *) [NSNull null] ? photoUrl : @"";
         recipe.difficulty = difficulty;
         recipe.objectidonserver = serverObjectId;
         recipe.changedateonserver = changedDate;
-        recipe.pushtoserver = [NSNumber numberWithBool:YES];
+        recipe.pushtoserver = @YES;
     }
     return recipe;
 }
 
 // Get a dump of the data
-+ (NSArray *)fetchAllInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
-    NSError *error;
++ (NSArray *)fetchAllInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    NSError *error = nil;
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:self.entityName
@@ -109,15 +114,16 @@
                                                           error:&error];
 
     if (error) {
-        DDLogWarn(@"Recipe+LocalAccessors - fetchAllInManagedObjectContext - failed  to find recipe upron to update:: %@", [error localizedDescription]);
+        DDLogWarn(@"Recipe+LocalAccessors - fetchAllInManagedObjectContext - failed  to find recipe upron to update:: %@", error.localizedDescription);
     }
 
     return result;
 }
 
 + (NSArray *)fetchAllUsingPredicate:(NSPredicate *)predicate
-                            Context:(NSManagedObjectContext *)managedObjectContext {
-    NSError *error;
+                            Context:(NSManagedObjectContext *)managedObjectContext
+{
+    NSError *error = nil;
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:self.entityName
@@ -129,14 +135,15 @@
                                                           error:&error];
 
     if (error) {
-        DDLogWarn(@"Recipe+LocalAccessors - fetchAllUsingPredicate - failed to find recipe: %@", [error localizedDescription]);
+        DDLogWarn(@"Recipe+LocalAccessors - fetchAllUsingPredicate - failed to find recipe: %@", error.localizedDescription);
     }
 
     return result;
 }
 
 + (NSFetchedResultsController *)fetchedResultsControllerWitSort:(NSSortDescriptor *)sort
-                                                        Context:(NSManagedObjectContext *)managedObjectContext {
+                                                        Context:(NSManagedObjectContext *)managedObjectContext
+{
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:self.entityName
                                               inManagedObjectContext:managedObjectContext];
@@ -154,32 +161,37 @@
 }
 
 // Flush cache
-+ (void)deleteCache {
++ (void)deleteCache
+{
     [NSFetchedResultsController deleteCacheWithName:[Recipe cacheName]];
 }
 
-+ (void)saveInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
-    NSError *error;
-
-    if (![managedObjectContext save:&error]) {
-        DDLogWarn(@"Recipe+LocalAccessors - saveInManagedObjectContext - failed to update/save recipe: %@:", [error localizedDescription]);
++ (void)saveInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    NSError *error = nil;
+    BOOL success = [managedObjectContext save:&error];
+    if (!success) {
+        DDLogWarn(@"Recipe+LocalAccessors - saveInManagedObjectContext - failed to update/save recipe: %@:", error.localizedDescription);
     }
 }
 
 // Mark/Unmark a recipe as a favorite
-- (void)markAsFavorite {
-    self.favorite = [NSNumber numberWithBool:![self.favorite boolValue]];
+- (void)markAsFavorite
+{
+    self.favorite = @(![self.favorite boolValue]);
 }
 
-- (void)save {
-    NSError *error;
-
-    if (![self.managedObjectContext save:&error]) {
-        DDLogWarn(@"Recipe+LocalAccessors - save - failed to update/save recipe: %@:", [error localizedDescription]);
+- (void)save
+{
+    NSError *error = nil;
+    BOOL success = [self.managedObjectContext save:&error];
+    if (!success) {
+        DDLogWarn(@"Recipe+LocalAccessors - save - failed to update/save recipe: %@:", error.localizedDescription);
     }
 }
 
-- (void)delete {
+- (void)delete
+{
     [self.managedObjectContext deleteObject:self];
 }
 

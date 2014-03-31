@@ -17,29 +17,34 @@
 
 @implementation HRMasterViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.imageManager = [[HRImageManager alloc] init];
     self.recipeServerManager = [[HRRecipeSyncManager alloc] initWithManagedObjectContext:self.managedObjectContext];
     [self setupFetchedResultsController];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:YES];
     // Sync data with server each time this view appears
     [self.recipeServerManager syncData];
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     self.fetchedResultsController = nil;
 }
 
-- (IBAction)refresh:(id)sender {
+- (IBAction)refresh:(id)sender
+{
     [self.recipeServerManager syncData];
 }
 
-- (void)setupFetchedResultsController {
-    if (_fetchedResultsController == nil) {
+- (void)setupFetchedResultsController
+{
+    if (!_fetchedResultsController) {
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
 
         self.fetchedResultsController = [Recipe fetchedResultsControllerWitSort:sort
@@ -53,7 +58,8 @@
     self.fetchedResultsControllerDataSource.reuseIdentifier = @"RecipeCell";
 }
 
-- (void)configureCell:(id)aCell withObject:(Recipe *)recipe {
+- (void)configureCell:(id)aCell withObject:(Recipe *)recipe
+{
     HRRecipeCell *cell = aCell;
 
     [cell.favoritePin setHighlighted:[recipe.favorite boolValue]];
@@ -64,17 +70,16 @@
 
     if (img) {
         [cell configureCellWithFoundImage:YES];
-        [cell.imageView setImage:img];
-    } else if([recipe.photo length]) {
+        cell.imageView.image = img;
+    } else if ([recipe.photo length]) {
         [cell.activityIndicator startAnimating];
-        [cell.activityIndicator setHidden:NO];
+        cell.activityIndicator.hidden = NO;
 
         // Add support to MIME photo/jpeg which is not standard
         [cell.imageView.imageResponseSerializer setAcceptableContentTypes:[NSSet setWithObjects:(@"photo/jpeg"), (@"image/jpeg"), nil]];
 
         __weak Recipe *weakRecipe = recipe;
         __weak HRRecipeCell *weakCell = cell;
-        // Set the image
         [cell.imageView setImageWithURLRequest:weakRecipe.photoUrlRequest
                               placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -92,10 +97,10 @@
                                            // If download fail show info text
                                            if ([error.localizedDescription isEqualToString:@"Request failed: forbidden (403)"]) {
                                                [weakCell configureCellWithFoundImage:NO];
-                                               [weakRecipe setPhoto:@""];
+                                               weakRecipe.photo = @"";
                                                [weakRecipe save];
                                            } else {
-                                               DDLogVerbose(@"HRMasterViewController - configureCell - Failed to download image with errro: %@ \n Got response: %@", [error localizedDescription], response);
+                                               DDLogVerbose(@"HRMasterViewController - configureCell - Failed to download image with errro: %@ \n Got response: %@", error.localizedDescription, response);
                                            }
                                        }];
     }else  {
@@ -106,7 +111,8 @@
 
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([[segue identifier] isEqualToString:@"showRecipe"]) {
         NSIndexPath *selectedRowIndex = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
 
@@ -119,13 +125,15 @@
     }
 }
 
-- (IBAction)unwindToRootVC:(UIStoryboardSegue *)segue {
+- (IBAction)unwindToRootVC:(UIStoryboardSegue *)segue
+{
     // A recipe has been marked as deleted and we need to flush the cache to make
     // sure that of NSFetchedResultsController to make sure that the collection is fetched again
     [Recipe deleteCache];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

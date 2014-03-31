@@ -23,7 +23,8 @@
 
 @implementation CDStack
 
-- (id)initWithStoreURL:(NSURL *)storeURL modelURL:(NSURL *)modelURL {
+- (id)initWithStoreURL:(NSURL *)storeURL modelURL:(NSURL *)modelURL
+{
     self = [super init];
     if (self) {
         self.storeURL = storeURL;
@@ -33,11 +34,12 @@
     return self;
 }
 
-- (void)setupManagedObjectContext {
+- (void)setupManagedObjectContext
+{
     self.managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     self.managedObjectContext.persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
 
-    NSError *error;
+    NSError *error = nil;
 
     [self.managedObjectContext.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                                        configuration:nil
@@ -45,11 +47,12 @@
                                                                              options:nil
                                                                                error:&error];
     if (error) {
-        DDLogError(@"CDStack - setupManagedObjectContext - Core Data error: %@", [error localizedDescription]);
+        DDLogError(@"CDStack - setupManagedObjectContext - Core Data error: %@", error.localizedDescription);
     }
 }
 
-- (NSManagedObjectModel *)managedObjectModel {
+- (NSManagedObjectModel *)managedObjectModel
+{
     return [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelURL];
 }
 

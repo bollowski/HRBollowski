@@ -31,7 +31,8 @@
 
 @implementation HRAddAndEditRecipeViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.imageManager = [[HRImageManager alloc] init];
 
@@ -45,17 +46,20 @@
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:YES];
     [self registerForKeyboardNotifications];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:YES];
     [self unRegisterFromKeyboardNotifications];
 }
 
-- (void)configureView {
+- (void)configureView
+{
     self.deleteButton.hidden = NO;
 
     // The image url and the objectId, on the server, should not be exposed to the user.
@@ -75,7 +79,7 @@
                                    success:nil
                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                        // If download fail make show text
-                                       DDLogWarn(@"HRAddAndEditRecipeViewController - configureView - Failed to download image: %@", [error localizedDescription]);
+                                       DDLogWarn(@"HRAddAndEditRecipeViewController - configureView - Failed to download image: %@", error.localizedDescription);
                                    }];
     }
 
@@ -85,7 +89,8 @@
     [self.difficultySegment setSelectedSegmentIndex:self.recipe.difficultyAsSegmentIndex];
 }
 
-- (void)fillOutTextViewForDescriptionAndInstructions {
+- (void)fillOutTextViewForDescriptionAndInstructions
+{
     if ([self.recipe.desc length]) {
         self.recipeDescription.text = self.recipe.desc;
     } else {
@@ -99,15 +104,18 @@
     }
 }
 
-- (NSNumber *)difficultyFromSelectedSegmentIndex {
+- (NSNumber *)difficultyFromSelectedSegmentIndex
+{
     return [NSNumber numberWithLong:self.difficultySegment.selectedSegmentIndex + 1];
 }
 
-- (IBAction)cancel:(id)sender {
+- (IBAction)cancel:(id)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)delete:(id)sender {
+- (IBAction)delete:(id)sender
+{
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You are about to delete the recipe!", nil)
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -117,7 +125,8 @@
     [actionSheet showInView:self.view];
 }
 
-- (IBAction)save:(id)sender {
+- (IBAction)save:(id)sender
+{
 
     if ([self.recipeName.text length]) {
         [self storeRecipe];
@@ -133,7 +142,8 @@
     }
 }
 
-- (void)storeRecipe {
+- (void)storeRecipe
+{
     NSString *descriptionToSave;
     NSString *instructionsToSave;
 
@@ -158,7 +168,7 @@
                                                        name:self.recipeName.text
                                                 description:descriptionToSave
                                                instructions:instructionsToSave
-                                                   favorite:[NSNumber numberWithBool:NO]
+                                                   favorite:@NO
                                                  difficulty:[self difficultyFromSelectedSegmentIndex]
                                                    photoUrl:self.photoUrl
                                               localPhotoUrl:self.localPhotoUrl
@@ -170,7 +180,8 @@
     [recipeServerManager pushToServerWithRecipe:recp];
 }
 
-- (void)deleteRecipe {
+- (void)deleteRecipe
+{
     //  Delete stored image on phone
     if ([self.recipe.localphotopath length]) {
         [self.imageManager deleteImageWithPath:self.recipe.localphotopath];
@@ -178,7 +189,7 @@
 
     if ([self.recipe.objectidonserver intValue] != 0) {
         // Inform that on next sync this recipe should be deleted
-        self.recipe.removefromserver = [NSNumber numberWithBool:YES];
+        self.recipe.removefromserver = @YES;
         [self.recipe save];
     }
     else {
@@ -193,7 +204,8 @@
 }
 
 #pragma mark - Photo
-- (IBAction)photo:(id)sender {
+- (IBAction)photo:(id)sender
+{
     UIActionSheet *photoSourcePicker = [[UIActionSheet alloc] initWithTitle:nil
                                                                    delegate:self
                                                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -204,7 +216,8 @@
     [photoSourcePicker showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self dismissViewControllerAnimated:YES completion:nil];
 
@@ -212,7 +225,8 @@
     self.localPhotoUrl = [self.imageManager storeImage:image];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (actionSheet.tag == 0) {
         switch (buttonIndex) {
             case 0: {
@@ -276,12 +290,14 @@
 
 #pragma mark - Textfield
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return NO;
 }
 
-- (void)registerForKeyboardNotifications {
+- (void)registerForKeyboardNotifications
+{
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidShow:)
@@ -289,14 +305,16 @@
                                                object:nil];
 }
 
-- (void)unRegisterFromKeyboardNotifications {
+- (void)unRegisterFromKeyboardNotifications
+{
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidHideNotification
                                                   object:nil];
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification {
+- (void)keyboardDidShow:(NSNotification *)notification
+{
     NSDictionary *info = [notification userInfo];
 
     CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -313,13 +331,18 @@
 }
 
 #pragma mark - Navigation
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-    if ([identifier isEqualToString:@"unwindToRootVC"]) if (!self.unwind)
-        return NO;
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if ([identifier isEqualToString:@"unwindToRootVC"]) {
+        if (!self.unwind) {
+            return NO;
+        }
+    }
     return YES;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([[segue identifier] isEqualToString:@"composeDescription"]) {
         NSString *descriptionDefaultString = NSLocalizedString(@"Tap the pen and paper icon to write a description of the recipe.", nil);
 
@@ -352,11 +375,13 @@
     }
 }
 
-- (IBAction)unwindToAddAndEditRecipeVC:(UIStoryboardSegue *)segue {
+- (IBAction)unwindToAddAndEditRecipeVC:(UIStoryboardSegue *)segue
+{
     // Nothing needed here.
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

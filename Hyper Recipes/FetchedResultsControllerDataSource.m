@@ -24,7 +24,8 @@
 
 @implementation FetchedResultsControllerDataSource
 
-- (id)initWithCollectionView:(UICollectionView *)collectionView {
+- (id)initWithCollectionView:(UICollectionView *)collectionView
+{
     self = [super init];
     if (self) {
         self.collectionView = collectionView;
@@ -36,19 +37,22 @@
     return self;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [[self.fetchedResultsController sections] count];
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return [self.fetchedResultsController.sections count];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
-     numberOfItemsInSection:(NSInteger)section {
+     numberOfItemsInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo;
     sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     id object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     id cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
 
@@ -63,7 +67,8 @@
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
     NSMutableDictionary *change = [NSMutableDictionary new];
 
     switch (type) {
@@ -87,7 +92,8 @@
 - (void)controller:(NSFetchedResultsController *)controller
   didChangeSection:(id)sectionInfo
            atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type {
+     forChangeType:(NSFetchedResultsChangeType)type
+{
     NSMutableDictionary *change = [NSMutableDictionary new];
 
     switch (type) {
@@ -107,7 +113,8 @@
 }
 
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     if ([self.sectionChanges count] > 0) {
         [self.collectionView performBatchUpdates:^{
 
@@ -132,8 +139,9 @@
         }                             completion:nil];
     }
 
-    if ([self.objectChanges count] > 0 && [self.sectionChanges count] == 0) {
-        if ([self shouldReloadCollectionView] || self.collectionView.window == nil) {
+    if ([self.objectChanges count] > 0 && [self.sectionChanges count] == 0)
+    {
+        if ([self shouldReloadCollectionView] || !self.collectionView.window) {
             [self.collectionView reloadData];
         } else {
             [self.collectionView performBatchUpdates:^{
@@ -194,7 +202,8 @@
     return shouldReload;
 }
 
-- (void)setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController {
+- (void)setFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
+{
     if (_fetchedResultsController != fetchedResultsController) {
         _fetchedResultsController.delegate = nil;
         _fetchedResultsController = fetchedResultsController;
@@ -209,12 +218,14 @@
     }
 }
 
-- (void)performFetch {
+- (void)performFetch
+{
     if (self.fetchedResultsController) {
-        NSError *error;
-
-        if (![self.fetchedResultsController performFetch:&error])
-        DDLogError(@"FetchedResultsControllerDataSource - performFetch - Error performing fetch: %@", [error localizedDescription]);
+        NSError *error = nil;
+        BOOL success = [self.fetchedResultsController performFetch:&error];
+        if (!success) {
+            DDLogError(@"FetchedResultsControllerDataSource - performFetch - Error performing fetch: %@", error.localizedDescription);
+        }
     }
 
     [self.collectionView reloadData];

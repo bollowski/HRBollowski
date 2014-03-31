@@ -11,11 +11,13 @@
 @implementation Recipe (Utilities)
 
 // Manage difficulty as a UISegment
-- (int)difficultyAsSegmentIndex {
+- (int)difficultyAsSegmentIndex
+{
     return [self.difficulty intValue] - 1;
 }
 
-- (NSString *)favoriteAsString {
+- (NSString *)favoriteAsString
+{
     if ([self.favorite boolValue]) {
         return @"true";
     } else {
@@ -23,12 +25,14 @@
     }
 }
 
-- (NSURLRequest *)photoUrlRequest {
+- (NSURLRequest *)photoUrlRequest
+{
     return [NSURLRequest requestWithURL:[NSURL URLWithString:self.photo]];
 }
 
 // Generate a nice image name for the server
-- (NSString *)photoNameForServer {
+- (NSString *)photoNameForServer
+{
     return [[self.name stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAppendingString:@".jpg"];
 }
 

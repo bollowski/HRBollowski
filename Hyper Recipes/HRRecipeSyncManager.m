@@ -25,7 +25,8 @@
 
 @implementation HRRecipeSyncManager
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         self.managedObjectContext = context;
@@ -34,7 +35,8 @@
 }
 
 // This method ensure that the data is in complete sync
-- (void)syncData {
+- (void)syncData
+{
     [Recipe loadAllOnResult:^(NSArray *result) {
 
         [self updateWithResult:result]; // Update local recipes if needed
@@ -45,11 +47,12 @@
         [self removeRecipesOnServer]; // Remove recipes from server which was deleted locally while offline
         
     }               onError:^(NSError *error) {
-        DDLogWarn(@"HRRecipeServerManager - syncData - Error while loading recipes from server: %@", [error localizedDescription]);
+        DDLogWarn(@"HRRecipeServerManager - syncData - Error while loading recipes from server: %@", error.localizedDescription);
     }];
 }
 
-- (void)updateWithResult:(NSArray *)result {
+- (void)updateWithResult:(NSArray *)result
+{
     for (NSDictionary *dic in result) {
         // Try to update/add Recipe if needed
         [Recipe insertOrUpdateRecipeWithServerObjectId:[dic objectForKey:@"id"]
@@ -64,7 +67,8 @@
     }
 }
 
-- (void)removeLocalRecipeIfNotInArray:(NSArray *)result {
+- (void)removeLocalRecipeIfNotInArray:(NSArray *)result
+{
     NSMutableDictionary *allServerObjectID = [[NSMutableDictionary alloc] init];
 
     for (NSDictionary *dic in result) {
@@ -78,7 +82,8 @@
     }
 }
 
-- (void)pushNotSyncedToServer {
+- (void)pushNotSyncedToServer
+{
     // Should only push a recipe to server if it full fill the criteria: pushtoserver == '' AND uploading == NO AND removefromserver == NO
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
 
@@ -90,7 +95,8 @@
     }
 }
 
-- (void)pushToServerWhenNoServerObjectId {
+- (void)pushToServerWhenNoServerObjectId
+{
     // Should only push a recipe to server if it full fill the criteria: objectidonserver == '' AND uploading == NO AND removefromserver == NO
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pushtoserver == YES AND uploading == NO AND removefromserver == NO"];
 
@@ -102,7 +108,8 @@
     }
 }
 
-- (void)pushToServerWithRecipe:(Recipe *)recipe {
+- (void)pushToServerWithRecipe:(Recipe *)recipe
+{
     if (![recipe.uploading boolValue]) {
         __weak Recipe *weakRecipe = recipe;
 
@@ -110,34 +117,36 @@
             // We are updating an existing recipe on the server
             [recipe saveOnResult:^(NSNumber *serverObjectId) {
                 // Mark the recipe as synced
-                [weakRecipe setPushtoserver:[NSNumber numberWithBool:NO ]];
+                weakRecipe.pushtoserver = @NO;
                 [weakRecipe save];
             }            onError:^(NSError *error) {
-                DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed saveOnResult: %@", [error localizedDescription]);
+                DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed saveOnResult: %@", error.localizedDescription);
             }];
         } else {
             // We are adding a recipe to the server
             [recipe createInstanceOnResult:^(NSNumber *serverObjectId) {
-                [weakRecipe setObjectidonserver:serverObjectId];
-                [weakRecipe setPushtoserver:[NSNumber numberWithBool:NO ]];
+                weakRecipe.objectidonserver = serverObjectId;
+                weakRecipe.pushtoserver = @NO;
                 [weakRecipe save];
             }                      onError:^(NSError *error) {
-                DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed createInstanceOnResult: %@", [error localizedDescription]);
+                DDLogWarn(@"HRRecipeManager - pushToServerWithRecipe - failed createInstanceOnResult: %@", error.localizedDescription);
             }];
         }
     }
 }
 
-- (void)pushUpdateFavoriteToServerWithRecipe:(Recipe *)recipe {
+- (void)pushUpdateFavoriteToServerWithRecipe:(Recipe *)recipe
+{
     [recipe markRecipeAsFavoriteOnResult:^(NSNumber *serverObjectId) {
         DDLogVerbose(@"markRecipeAsFavoriteOnResult result: %@", serverObjectId);
     }
                                  onError:^(NSError *error) {
-                                     DDLogWarn(@"HRRecipeManager - pushUpdateFavoriteToServerWithRecipe - failed markRecipeAsFavoriteOnResult: %@", [error localizedDescription]);
+                                     DDLogWarn(@"HRRecipeManager - pushUpdateFavoriteToServerWithRecipe - failed markRecipeAsFavoriteOnResult: %@", error.localizedDescription);
                                  }];
 }
 
-- (void)removeRecipesOnServer {
+- (void)removeRecipesOnServer
+{
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"removefromserver == YES"];
 
     NSArray *shoudRemoved = [Recipe fetchAllUsingPredicate:predicate
@@ -147,11 +156,12 @@
         [self pushRemoveFromServerWithRecipe:recipe];
 }
 
-- (void)pushRemoveFromServerWithRecipe:(Recipe *)recipe {
+- (void)pushRemoveFromServerWithRecipe:(Recipe *)recipe
+{
     [recipe deleteFromServerOnResult:^(Recipe *rec) {
         [rec delete];
     }                        onError:^(NSError *error) {
-        DDLogWarn(@"HRRecipeServerManager - pushRemoveFromServerWithObjectId - failed deleteOnResult: %@", [error localizedDescription]);
+        DDLogWarn(@"HRRecipeServerManager - pushRemoveFromServerWithObjectId - failed deleteOnResult: %@", error.localizedDescription);
     }];
 }
 

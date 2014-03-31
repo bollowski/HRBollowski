@@ -10,9 +10,11 @@
 
 @implementation Recipe (RemoteAccessors)
 
-+ (void)loadAllOnResult:(RecipeArrayBlock)resultBlock onError:(RecipeErrorBlock)errorBlock {
++ (void)loadAllOnResult:(RecipeArrayBlock)resultBlock onError:(RecipeErrorBlock)errorBlock
+{
     // Fetch all recipes on server
-    [[HRAPIManager sharedClient] GET:@"recipes" parameters:nil success:^(NSURLSessionDataTask *__unused task, id JSON) {
+    [[HRAPIManager sharedClient] GET:@"recipes" parameters:nil
+                             success:^(NSURLSessionDataTask *__unused task, id JSON) {
         if (resultBlock) {
             resultBlock(JSON);
         }
@@ -23,16 +25,18 @@
     }];
 }
 
-- (void)createInstanceOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock {
+- (void)createInstanceOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock
+{
     // The app is in progress of uploading the recipe
     [self recipeIsUploadingToServer];
 
     NSDictionary *parameters = @{@"recipe" :
-            @{@"name" : self.name,
-                    @"difficulty" : self.difficulty,
-                    @"description" : self.desc ? self.desc : @"",
-                    @"instructions" : self.instructions ? self.instructions : @""}
-    };
+                                     @{@"name" : self.name,
+                                 @"difficulty" : self.difficulty,
+                                @"description" : self.desc ? self.desc : @"",
+                               @"instructions" : self.instructions ? self.instructions : @""
+                                       }
+                                 };
 
     __weak Recipe *weakSelf = self;
 
@@ -47,29 +51,30 @@
                     [formData appendPartWithFileData:imageData name:@"recipe[photo]" fileName:fileName mimeType:@"image/jpeg"];
                 }
             } success:^(NSURLSessionDataTask *task, id responseObject) {
-        resultBlock([NSNumber numberWithInt:[[responseObject objectForKey:@"id"] intValue]]);
+                resultBlock([NSNumber numberWithInt:[[responseObject objectForKey:@"id"] intValue]]);
 
-        // The app is not in progress of uploading the recipe
-        [self recipeIsNotUploadingToServer];
+                // The app is not in progress of uploading the recipe
+                [self recipeIsNotUploadingToServer];
+                DDLogVerbose(@"Success, responseObject: %@", responseObject);
 
-        DDLogVerbose(@"Success, responseObject: %@", responseObject);
-
-    }                         failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self recipeIsNotUploadingToServer];
-        errorBlock(error);
-    }];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [self recipeIsNotUploadingToServer];
+                errorBlock(error);
+            }];
 }
 
-- (void)saveOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock {
+- (void)saveOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock
+{
     // The app is in progress of uploading the recipe
     [self recipeIsUploadingToServer];
 
     NSDictionary *parameters = @{@"recipe" :
-            @{@"name" : self.name,
-                    @"difficulty" : self.difficulty,
-                    @"description" : self.desc ? self.desc : @"",
-                    @"instructions" : self.instructions ? self.instructions : @""}
-    };
+                                    @{@"name" : self.name,
+                                @"difficulty" : self.difficulty,
+                               @"description" : self.desc ? self.desc : @"",
+                              @"instructions" : self.instructions ? self.instructions : @""
+                                      }
+                                 };
 
     NSString *url = [[[[HRAPIManager sharedClient] baseURLAsString] stringByAppendingString:@"/recipes/"]
             stringByAppendingString:[self.objectidonserver stringValue]];
@@ -79,6 +84,7 @@
                                  URLString:url
                                 parameters:parameters
                  constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+                     
                      if ([self.localphotopath length]) {
                          NSData *imageData = [NSData dataWithContentsOfFile:self.localphotopath];
                          NSString *fileName = [self photoNameForServer];
@@ -93,21 +99,24 @@
                                         // The app is not in progress of uploading the recipe
                                         [self recipeIsNotUploadingToServer];
 
-                                        if (error)
+                                        if (error) {
                                             errorBlock(error);
-                                        else
+                                        } else {
                                             resultBlock([NSNumber numberWithInt:0]);
+                                        }
                                     }] resume];
 }
 
-- (void)markRecipeAsFavoriteOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock {
+- (void)markRecipeAsFavoriteOnResult:(RecipeObjectIdBlock)resultBlock onError:(RecipeErrorBlock)errorBlock
+{
     [self recipeIsUploadingToServer];
 
     NSDictionary *parameters = @{@"recipe" :
-            @{@"name" : self.name,
-                    @"difficulty" : self.difficulty,
-                    @"favorite" : [self favoriteAsString]}
-    };
+                                     @{@"name" : self.name,
+                                 @"difficulty" : self.difficulty,
+                                   @"favorite" : [self favoriteAsString]
+                                       }
+                                 };
 
     [[HRAPIManager sharedClient] PUT:[@"recipes/" stringByAppendingString:[self.objectidonserver stringValue]]
                           parameters:parameters
@@ -124,7 +133,8 @@
 
 }
 
-- (void)deleteFromServerOnResult:(RecipeObjectBlock)resultBlock onError:(RecipeErrorBlock)errorBlock {
+- (void)deleteFromServerOnResult:(RecipeObjectBlock)resultBlock onError:(RecipeErrorBlock)errorBlock
+{
     // Delete recipe from server
     [[HRAPIManager sharedClient] DELETE:[@"recipes/" stringByAppendingString:[self.objectidonserver stringValue]]
                              parameters:nil
@@ -137,13 +147,15 @@
 }
 
 // This logic make sure that a recipe is only uploaded once
-- (void)recipeIsUploadingToServer {
-    self.uploading = [NSNumber numberWithBool:YES];
+- (void)recipeIsUploadingToServer
+{
+    self.uploading = @YES;
     [self save];
 }
 
-- (void)recipeIsNotUploadingToServer {
-    self.uploading = [NSNumber numberWithBool:NO];
+- (void)recipeIsNotUploadingToServer
+{
+    self.uploading = @NO;
     [self save];
 }
 

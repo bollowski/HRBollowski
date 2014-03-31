@@ -12,7 +12,8 @@ static NSString *const APIBaseURLString = @"http://hyper-recipes.herokuapp.com";
 
 @implementation HRAPIManager
 
-+ (instancetype)sharedClient {
++ (instancetype)sharedClient
+{
     static HRAPIManager *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -32,7 +33,8 @@ static NSString *const APIBaseURLString = @"http://hyper-recipes.herokuapp.com";
     return self;
 }
 
-- (NSString *)baseURLAsString {
+- (NSString *)baseURLAsString
+{
     return APIBaseURLString;
 }
 

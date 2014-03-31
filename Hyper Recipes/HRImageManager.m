@@ -12,7 +12,8 @@
 
 @implementation HRImageManager
 
-- (UIImage *)loadImageForRecipe:(Recipe *)recipe {
+- (UIImage *)loadImageForRecipe:(Recipe *)recipe
+{
     if ([recipe.localphotopath length]) {
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfFile:recipe.localphotopath]];
 
@@ -30,13 +31,13 @@
     return nil;
 }
 
-- (NSString *)storeImage:(UIImage *)image {
+- (NSString *)storeImage:(UIImage *)image
+{
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
 
     NSString *cachedFolderPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    NSString *cachedImagePath = [[cachedFolderPath stringByAppendingPathComponent:
-            [NSString stringWithFormat:@"%@.jpg", [NSDate date]]]
-            stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *cachedImagePath = [[cachedFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", [NSDate date]]]
+                                             stringByReplacingOccurrencesOfString:@" " withString:@""];
 
     if (![imageData writeToFile:cachedImagePath atomically:YES]) {
         return nil;
@@ -45,14 +46,15 @@
     }
 }
 
-- (void)deleteImageWithPath:(NSString *)path {
+- (void)deleteImageWithPath:(NSString *)path
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
+    NSError *error = nil;
     BOOL fileExists = [fileManager fileExistsAtPath:path];
 
     if (fileExists) {
         if (![fileManager removeItemAtPath:path error:&error]) {
-            DDLogError(@"HRImageManager - deleteImageWithPath - Failed to delete image: %@", [error localizedDescription]);
+            DDLogError(@"HRImageManager - deleteImageWithPath - Failed to delete image: %@", error.localizedDescription);
         }
     }
 }

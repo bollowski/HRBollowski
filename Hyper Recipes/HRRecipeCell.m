@@ -16,43 +16,43 @@
 
 @implementation HRRecipeCell
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
     }
     return self;
 }
 
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
     [super prepareForReuse];
     [self resetCell];
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-}
-
-- (void)resetCell {
-    [self.missingPhotoLabel setHidden:YES];
-    [self.imageView setHidden: YES];
-    [self.imageView setImage:nil];
-    [self.activityIndicator setHidden:YES];
+- (void)resetCell
+{
+    self.missingPhotoLabel.hidden = YES;
+    self.imageView.hidden         = YES;
+    self.imageView.image          = nil;
+    self.activityIndicator.hidden = YES;
     [self.activityIndicator stopAnimating];
 }
 
 // Fix the cell so that it shows image "status" correctly
-- (void)configureCellWithFoundImage:(BOOL)display {
+- (void)configureCellWithFoundImage:(BOOL)display
+{
     if (display) {
-        [self.imageView setHidden:NO];
+        self.imageView.hidden         = NO;
+        self.activityIndicator.hidden = YES;
+        self.missingPhotoLabel.hidden = YES;
         [self.activityIndicator stopAnimating];
-        [self.activityIndicator setHidden:YES];
-        [self.missingPhotoLabel setHidden:YES];
     } else {
-        [self.imageView setImage:nil];
-        [self.imageView setHidden:YES];
-        [self.activityIndicator setHidden:YES];
+        self.imageView.image          = nil;
+        self.imageView.hidden         = YES;
+        self.activityIndicator.hidden = YES;
+        self.missingPhotoLabel.hidden = NO;
         [self.activityIndicator stopAnimating];
-        [self.missingPhotoLabel setHidden:NO];
     }
 }
 @end

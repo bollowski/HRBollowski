@@ -25,13 +25,15 @@
 
 @implementation HRDetailViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.imageManager = [[HRImageManager alloc] init];
     [self configureView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:YES];
 
     if (self.hasVisitedModalView) {
@@ -40,7 +42,8 @@
     }
 }
 
-- (void)configureView {
+- (void)configureView
+{
     [self imageForRecipe];
     [self updateFavoriteButton];
 
@@ -61,28 +64,32 @@
     }
 }
 
-- (void)imageForRecipe; {
+- (void)imageForRecipe;
+{
     self.missingPhotoLabel.text = NSLocalizedString(@"This recipe is missing a photo. Cook and Snap!", nil);
 
     UIImage *img = [self.imageManager loadImageForRecipe:self.recipe];
 
     if (img) {
-        [self.deliciousImage setImage:img];
-    } else if (self.recipe.photo) {
+        self.deliciousImage.image = img;
+    } else if ([self.recipe.photo length]) {
         [self.deliciousImage.imageResponseSerializer setAcceptableContentTypes:[NSSet setWithObjects:(@"photo/jpeg"), (@"image/jpeg"), nil]];
         [self.deliciousImage setImageWithURLRequest:self.recipe.photoUrlRequest
                                    placeholderImage:nil
                                             success:nil
                                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                 // If download fail make show text
-                                                DDLogWarn(@"HRDetailViewController - imageForRecipe - Failed to download image: %@", [error localizedDescription]);
+                                                DDLogWarn(@"HRDetailViewController - imageForRecipe - Failed to download image: %@", error.localizedDescription);
                                                 self.deliciousImage.hidden = YES;
                                                 self.missingPhotoLabel.hidden = NO;
                                             }];
+    } else {
+        self.missingPhotoLabel.hidden = NO;
     }
 }
 
-- (void)updateViewRecipe {
+- (void)updateViewRecipe
+{
     self.recipe = (id) [self.recipe.managedObjectContext objectWithID:self.recipe.objectID];
 
     // Only update view if recipe exist, this block null ref when deleting recipes
@@ -91,11 +98,13 @@
     }
 }
 
-- (void)updateFavoriteButton {
+- (void)updateFavoriteButton
+{
     [self.favoriteButton setSelected:[self.recipe.favorite boolValue]];
 }
 
-- (IBAction)favorite:(id)sender {
+- (IBAction)favorite:(id)sender
+{
     [self.recipe markAsFavorite];
     [self.recipe save];
 
@@ -105,14 +114,16 @@
     [self updateFavoriteButton];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([[segue identifier] isEqualToString:@"editRecipe"]) {
         self.hasVisitedModalView = YES;
         HRAddAndEditRecipeViewController *addRecipeViewController = segue.destinationViewController;

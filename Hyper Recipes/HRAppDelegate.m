@@ -17,7 +17,8 @@
 
 @implementation HRAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     // Configure Lumberjack
     // Send to Console.app
     [DDLog addLogger:[DDASLLogger sharedInstance]];
@@ -42,29 +43,34 @@
     return YES;
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     //Core Data: Store the managed object context
     [self saveContext];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     //Core Data: Store the managed object context
     [self saveContext];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
     // Clear cache
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
-- (void)saveContext {
+- (void)saveContext
+{
     NSError *error = nil;
 
     if (![self.stack.managedObjectContext save:&error])
-    DDLogError(@"HRAppDelegate - saveContext - Core Data Error saving in Appdelegat: %@", [error localizedDescription]);
+    DDLogError(@"HRAppDelegate - saveContext - Core Data Error saving in Appdelegat: %@", error.localizedDescription);
 }
 
-- (NSURL *)storeURL {
+- (NSURL *)storeURL
+{
     NSURL *documentsDirectory = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
                                                                        inDomain:NSUserDomainMask
                                                               appropriateForURL:nil
@@ -73,7 +79,8 @@
     return [documentsDirectory URLByAppendingPathComponent:@"HyperRecipe.sqlite"];
 }
 
-- (NSURL *)modelURL {
+- (NSURL *)modelURL
+{
     return [[NSBundle mainBundle] URLForResource:@"HyperRecipe" withExtension:@"momd"];
 }
 
